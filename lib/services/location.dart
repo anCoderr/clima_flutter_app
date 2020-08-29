@@ -8,6 +8,7 @@ class Location {
   Position position;
 
   Future<void> getCurrentLocation() async {
+    print('location starts');
     try {
       position = await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
@@ -35,6 +36,7 @@ class Location {
           backgroundColor: Colors.grey,
           textColor: Colors.white,
           fontSize: 16.0);
+      print('location ends');
     }
   }
 }

@@ -2,6 +2,9 @@ import 'package:clima_flutter_app/services/location.dart';
 import 'package:clima_flutter_app/services/networking.dart';
 import 'package:clima_flutter_app/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'location_screen.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -15,36 +18,32 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
-    getLocationAndWeather();
+    getLocationAndData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+        body: Center(
+            child: SpinKitDoubleBounce(
+      color: Colors.white,
+      size: 100.0,
+    )));
   }
 
-  void getLocationAndWeather() async {
+  void getLocationAndData() async {
+    print('getloc+data starts');
     Location location = Location();
     await location.getCurrentLocation();
     latitude = location.latitude;
     longitude = location.longitude;
     NetworkHelper networkHelper = NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$kApiKey');
-    );
-  }
-
-  void getData() async {
-    http.Response response = await http.get(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$kApiKey');
-    if (response.statusCode == 200) {
-      String data = response.body;
-      var decodedData = jsonDecode(data);
-      var temperature = decodedData['main']['temp'];
-      var condition = decodedData['weather'][0]['id'];
-      var cityName = decodedData['name'];
-      print(temperature);
-      print(condition);
-      print(cityName);
-    }
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude)&appid=$kApiKey');
+    var weatherData = await networkHelper.getData();
+    print('getloc+data mid');
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
+    print('getloc+data ends');
   }
 }
