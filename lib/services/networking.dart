@@ -8,7 +8,6 @@ class NetworkHelper {
   NetworkHelper(this.url);
 
   Future getData() async {
-    print('data starts');
     http.Response response = await http.get(url);
     if (response.statusCode == 200) {
       String data = response.body;
@@ -16,10 +15,5 @@ class NetworkHelper {
     } else {
       print(response.statusCode);
     }
-    print('data ends');
   }
 }
-
-// var temperature = decodedData['main']['temp'];
-// var condition = decodedData['weather'][0]['id'];
-// var cityName = decodedData['name'];
